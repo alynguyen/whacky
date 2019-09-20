@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <title>Whacky Widgets</title>
+</head>
+<body>
+<h1>
+  Whacky Widgets
+</h1>
+
+{% if widgets %}
+
+<div class="container">
+  <table class="pure-table">
+    <thead>
+      <tr><th>Description</th><th>Quantity</th><th>Delete</th></tr>
+    </thead>
+    <tbody>
+      {% for widget in widgets %} 
+      <tr>
+        <td>{{widget.description}}</td>
+        <td>{{widget.quantity}}</td>
+        <td>
+          <form action="{% url 'rmv_widget' widget.id %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" class="btn" value="x">
+          </form>
+        </td>
+      </tr>
+    
+      {% empty %}
+
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+{% else %}
+No widgets
+{% endif %}
+<hr/>
+
+<h4>Add Widget</h4>
+
+<form action="{% url 'create_widget' %}" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" class="" value="Add Widget">
+</form>
+
+
+</body>
+</html>
